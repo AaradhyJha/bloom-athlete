@@ -27,6 +27,13 @@ const Landing = () => {
             <Link to="/auth/coach">
               <Button variant="coach">Coach Portal</Button>
             </Link>
+            {/* Testing bypass buttons */}
+            <Link to="/athlete/dashboard">
+              <Button variant="outline" size="sm" className="text-xs">Test: Athlete</Button>
+            </Link>
+            <Link to="/coach/dashboard">
+              <Button variant="outline" size="sm" className="text-xs">Test: Coach</Button>
+            </Link>
           </div>
         </div>
       </header>

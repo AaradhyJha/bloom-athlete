@@ -145,6 +145,15 @@ const CoachAuth = () => {
               Submit Application for Review
             </Button>
 
+            {/* Testing bypass */}
+            <div className="mt-4">
+              <Link to="/coach/dashboard">
+                <Button variant="secondary" className="w-full" size="sm">
+                  Skip to Dashboard (Testing)
+                </Button>
+              </Link>
+            </div>
+
             {/* Login for existing coaches */}
             <div className="text-center pt-4 border-t border-border">
               <p className="text-sm text-muted-foreground mb-3">

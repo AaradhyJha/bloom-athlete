@@ -125,6 +125,15 @@ const AthleteAuth = () => {
               </TabsContent>
             </Tabs>
 
+            {/* Testing bypass */}
+            <div className="mt-4">
+              <Link to="/athlete/dashboard">
+                <Button variant="outline" className="w-full" size="sm">
+                  Skip Auth (Testing)
+                </Button>
+              </Link>
+            </div>
+
             <div className="mt-6 pt-6 border-t border-border">
               <div className="text-xs text-muted-foreground text-center">
                 By continuing, you agree to our{" "}
