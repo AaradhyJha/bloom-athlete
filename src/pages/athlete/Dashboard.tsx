@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Link } from "react-router-dom";
 import { 
   User, 
   Trophy, 
@@ -109,10 +110,12 @@ const AthleteDashboard = () => {
               <TabsContent value="assessments" className="space-y-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-bold">Assessment Tests</h2>
-                  <Button variant="hero">
-                    <Plus className="h-4 w-4 mr-2" />
-                    New Assessment
-                  </Button>
+                  <Link to="/athlete/assessment/select">
+                    <Button variant="hero">
+                      <Plus className="h-4 w-4 mr-2" />
+                      New Assessment
+                    </Button>
+                  </Link>
                 </div>
 
                 <div className="grid gap-4">
@@ -164,9 +167,11 @@ const AthleteDashboard = () => {
                       <p className="text-sm text-muted-foreground mb-4">
                         Test your lateral movement and direction change capabilities
                       </p>
-                      <Button variant="achievement" className="w-full">
-                        Start Assessment
-                      </Button>
+                      <Link to="/athlete/assessment/record/agility">
+                        <Button variant="achievement" className="w-full">
+                          Start Assessment
+                        </Button>
+                      </Link>
                     </CardContent>
                   </Card>
 
