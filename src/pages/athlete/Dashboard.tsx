@@ -309,9 +309,11 @@ const AthleteDashboard = () => {
                   <span className="text-muted-foreground">Height:</span>
                   <span className="font-medium">5'8"</span>
                 </div>
-                <Button variant="outline" className="w-full mt-4">
-                  Edit Profile
-                </Button>
+                <Link to="/athlete/profile">
+                  <Button variant="outline" className="w-full mt-4">
+                    Edit Profile
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
 
