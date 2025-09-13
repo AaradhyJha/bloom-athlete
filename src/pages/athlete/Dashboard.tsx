@@ -35,10 +35,12 @@ const AthleteDashboard = () => {
             <Badge variant="secondary">Athlete Portal</Badge>
           </div>
           <div className="flex items-center space-x-3">
-            <Button variant="ghost" size="sm">
-              <User className="h-4 w-4 mr-2" />
-              Profile
-            </Button>
+            <Link to="/athlete/profile">
+              <Button variant="ghost" size="sm">
+                <User className="h-4 w-4 mr-2" />
+                Profile
+              </Button>
+            </Link>
             <Button variant="outline" size="sm">Sign Out</Button>
           </div>
         </div>

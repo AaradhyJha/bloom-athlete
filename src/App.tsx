@@ -7,6 +7,7 @@ import Landing from "./pages/Landing";
 import AthleteAuth from "./pages/auth/AthleteAuth";
 import CoachAuth from "./pages/auth/CoachAuth";
 import AthleteDashboard from "./pages/athlete/Dashboard";
+import AthleteProfile from "./pages/athlete/Profile";
 import CoachDashboard from "./pages/coach/Dashboard";
 import AssessmentSelect from "./pages/athlete/AssessmentSelect";
 import AssessmentRecord from "./pages/athlete/AssessmentRecord";
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/auth/athlete" element={<AthleteAuth />} />
           <Route path="/auth/coach" element={<CoachAuth />} />
           <Route path="/athlete/dashboard" element={<AthleteDashboard />} />
+          <Route path="/athlete/profile" element={<AthleteProfile />} />
           <Route path="/athlete/assessment/select" element={<AssessmentSelect />} />
           <Route path="/athlete/assessment/record/:testId" element={<AssessmentRecord />} />
           <Route path="/athlete/assessment/processing/:testId" element={<AssessmentProcessing />} />

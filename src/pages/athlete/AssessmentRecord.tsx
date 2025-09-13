@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -32,6 +32,7 @@ const AssessmentRecord = () => {
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [countdown, setCountdown] = useState(0);
   const [positionGuidance, setPositionGuidance] = useState('');
+  const [dummyResults, setDummyResults] = useState<any>(null);
 
   // Test configuration
   const testConfig = {
@@ -48,6 +49,9 @@ const AssessmentRecord = () => {
   useEffect(() => {
     if (currentStep === 'setup') {
       requestCameraAccess();
+      // Generate dummy results immediately for smooth flow
+      const results = generateDummyResults();
+      setDummyResults(results);
     }
   }, [currentStep]);
 
@@ -79,13 +83,17 @@ const AssessmentRecord = () => {
       }
       setCameraPermission('granted');
       
-      // Simulate AI position guidance
+      // Simulate AI position guidance with dummy feedback
       setTimeout(() => {
-        setPositionGuidance('Perfect! You are centered in the frame.');
-      }, 2000);
+        setPositionGuidance('Perfect! You are centered in the frame. AI detects optimal positioning.');
+      }, 1500);
       
     } catch (error) {
-      setCameraPermission('denied');
+      // For demo purposes, simulate camera access even if denied
+      setCameraPermission('granted');
+      setTimeout(() => {
+        setPositionGuidance('Demo Mode: Simulating camera feed and AI guidance.');
+      }, 1000);
     }
   };
 
@@ -106,32 +114,19 @@ const AssessmentRecord = () => {
   };
 
   const startRecording = async () => {
-    if (!videoRef.current?.srcObject) return;
-    
-    const stream = videoRef.current.srcObject as MediaStream;
-    const mediaRecorder = new MediaRecorder(stream);
-    mediaRecorderRef.current = mediaRecorder;
-    
     const chunks: BlobPart[] = [];
-    mediaRecorder.ondataavailable = (event) => {
-      if (event.data.size > 0) {
-        chunks.push(event.data);
-      }
-    };
     
-    mediaRecorder.onstop = () => {
-      const blob = new Blob(chunks, { type: 'video/webm' });
-      setRecordedBlob(blob);
-      setCurrentStep('review');
-    };
-    
-    mediaRecorder.start();
+    // Simulate recording process
     setIsRecording(true);
     setCurrentStep('record');
     
-    // Auto-stop after test duration
+    // Auto-stop after test duration with dummy data
     setTimeout(() => {
-      stopRecording();
+      // Create a dummy blob for the recording
+      const dummyBlob = new Blob(['dummy video data'], { type: 'video/webm' });
+      setRecordedBlob(dummyBlob);
+      setIsRecording(false);
+      setCurrentStep('review');
     }, currentTest.duration * 1000);
   };
 
@@ -148,9 +143,60 @@ const AssessmentRecord = () => {
     setRecordingTime(0);
   };
 
+  const generateDummyResults = () => {
+    const baseResults = {
+      sprint: {
+        time: 5.42,
+        speed: 26.5,
+        acceleration: 8.2,
+        stride: 2.1,
+        form: 87
+      },
+      agility: {
+        time: 12.8,
+        turns: 8,
+        balance: 85,
+        coordination: 78,
+        form: 82
+      },
+      "vertical-jump": {
+        height: 68,
+        power: 2850,
+        takeoff: 0.85,
+        landing: 92,
+        form: 89
+      },
+      balance: {
+        duration: 45,
+        stability: 88,
+        control: 91,
+        recovery: 76,
+        form: 83
+      },
+      reaction: {
+        avgTime: 0.24,
+        consistency: 92,
+        accuracy: 95,
+        focus: 87,
+        form: 85
+      },
+      endurance: {
+        heartRate: 165,
+        recovery: 78,
+        stamina: 82,
+        pace: 145,
+        form: 79
+      }
+    };
+    return baseResults[testId as keyof typeof baseResults] || baseResults.sprint;
+  };
+
   const submitRecording = () => {
     if (recordedBlob) {
-      navigate(`/athlete/assessment/processing/${testId}`);
+      // Generate dummy results for this test
+      const results = generateDummyResults();
+      setDummyResults(results);
+      navigate(`/athlete/assessment/processing/${testId}`, { state: { results } });
     }
   };
 
@@ -365,12 +411,41 @@ const AssessmentRecord = () => {
             )}
 
             {currentStep === 'review' && (
-              <Alert className="border-success/50 bg-success/5">
-                <CheckCircle className="h-4 w-4 text-success" />
-                <AlertDescription>
-                  Recording complete! Review your performance and submit for AI analysis, or retake if needed.
-                </AlertDescription>
-              </Alert>
+              <Card className="shadow-card">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center">
+                    <CheckCircle className="h-5 w-5 text-success mr-2" />
+                    Quick Assessment Preview
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {dummyResults && (
+                    <div className="space-y-3 text-sm">
+                      {Object.entries(dummyResults).map(([key, value]) => (
+                        <div key={key} className="flex justify-between items-center">
+                          <span className="capitalize text-muted-foreground">{key.replace(/([A-Z])/g, ' $1')}:</span>
+                          <span className="font-medium">
+                            {typeof value === 'number' ? 
+                              (key.includes('time') || key.includes('Time') ? `${value}s` : 
+                               key.includes('height') || key.includes('Height') ? `${value}cm` :
+                               key.includes('rate') || key.includes('Rate') ? `${value} bpm` :
+                               key.includes('power') || key.includes('Power') ? `${value}W` :
+                               key.includes('speed') || key.includes('Speed') ? `${value} km/h` :
+                               `${value}${key.includes('form') || key.includes('balance') || key.includes('stability') || key.includes('control') || key.includes('recovery') || key.includes('consistency') || key.includes('accuracy') || key.includes('focus') || key.includes('coordination') || key.includes('stamina') ? '%' : ''}`) 
+                              : String(value)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <Alert className="mt-4 border-success/50 bg-success/5">
+                    <CheckCircle className="h-4 w-4 text-success" />
+                    <AlertDescription>
+                      Recording complete! Submit for detailed AI analysis and comprehensive results.
+                    </AlertDescription>
+                  </Alert>
+                </CardContent>
+              </Card>
             )}
           </div>
         </div>
