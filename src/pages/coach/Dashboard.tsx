@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -83,7 +84,9 @@ const CoachDashboard = () => {
           <div className="flex items-center space-x-3">
             <span className="text-sm text-muted-foreground">Coach: Rajesh Patel</span>
             <Button variant="outline" size="sm">Settings</Button>
-            <Button variant="outline" size="sm">Sign Out</Button>
+            <Link to="/">
+              <Button variant="outline" size="sm">Sign Out</Button>
+            </Link>
           </div>
         </div>
       </header>

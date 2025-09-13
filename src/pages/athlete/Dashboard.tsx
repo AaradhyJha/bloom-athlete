@@ -41,7 +41,9 @@ const AthleteDashboard = () => {
                 Profile
               </Button>
             </Link>
-            <Button variant="outline" size="sm">Sign Out</Button>
+            <Link to="/">
+              <Button variant="outline" size="sm">Sign Out</Button>
+            </Link>
           </div>
         </div>
       </header>
